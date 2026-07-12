@@ -4,8 +4,9 @@ FNLauncher made by helix.67 on discord (which is me lol)
 
 A simple Windows console launcher for OGFN. It handles importing builds, connecting to a backend, launching Fortnite with the right auth args, and injecting the DLLs you choose.
 
-## What it brings (these options should be self explanitory)
+## What it brings (these options should be self explanatory)
 
+| # | Option |
 |---|--------|
 | 1 | Import build |
 | 2 | Redirect / Authentication |
