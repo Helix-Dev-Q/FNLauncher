@@ -216,7 +216,7 @@ void setLogin(Config& cfg) {
     if (cfg.password.empty()) {
         std::wcout << L"Password: ";
     } else {
-        std::wcout << L"Password [" << std::wstring(cfg.password.size(), L'*') << L", blank to keep]: ";
+        std::wcout << L"Password [" << cfg.password << L", blank to keep]: ";
     }
     std::wcout.flush();
     std::wstring pass = readLine();
@@ -228,28 +228,60 @@ void setLogin(Config& cfg) {
     wait(2);
 }
 
-void doLaunch(Config& cfg) {
+void setClientLogin(Config& cfg) {
     clearScreen();
     printHeader();
+    std::wcout << L"Client email and password\n\n";
 
+    if (cfg.clientEmail.empty()) {
+        std::wcout << L"Client email: ";
+    } else {
+        std::wcout << L"Client email [" << cfg.clientEmail << L", blank to keep]: ";
+    }
+    std::wcout.flush();
+    std::wstring email = readLine();
+    if (!email.empty()) {
+        cfg.clientEmail = email;
+    }
+
+    if (cfg.clientPassword.empty()) {
+        std::wcout << L"Client password: ";
+    } else {
+        std::wcout << L"Client password [" << cfg.clientPassword << L", blank to keep]: ";
+    }
+    std::wcout.flush();
+    std::wstring pass = readLine();
+    if (!pass.empty()) {
+        cfg.clientPassword = pass;
+    }
+
+    std::wcout << L"Client login saved.\n";
+    wait(2);
+}
+
+bool launchClient(
+    Config& cfg,
+    const std::wstring& email,
+    const std::wstring& password,
+    const wchar_t* label) {
     Build* build = getBuild(cfg);
     if (!build) {
         std::wcout << L"Import a build first.\n";
         wait(2);
-        return;
+        return false;
     }
 
     if (!validRoot(build->root)) {
         std::wcout << L"This folder does not contain FortniteGame and Engine.\n";
         wait(2);
-        return;
+        return false;
     }
 
     std::wstring dll = getDll(cfg);
     if (dll.empty()) {
         std::wcout << L"Set a redirect DLL first.\n";
         wait(2);
-        return;
+        return false;
     }
 
     std::wcout << L"Checking backend...\n";
@@ -259,7 +291,7 @@ void doLaunch(Config& cfg) {
         std::wcout << L"Backend isnt detected, if your backend is on you may have put the port wrong\n";
         std::wcout.flush();
         wait(3);
-        return;
+        return false;
     }
 
     if (!exists(build->exe)) {
@@ -268,21 +300,21 @@ void doLaunch(Config& cfg) {
         if (!exe) {
             std::wcout << err << L"\n";
             wait(2);
-            return;
+            return false;
         }
         build->exe = *exe;
     }
 
     unsigned long pid = 0;
     std::wstring err;
-    std::wstring login = cfg.email;
+    bool firstClient = countFortnite() == 0;
 
-    std::wcout << L"Starting Fortnite...\n";
+    std::wcout << label << L"\n";
     std::wcout.flush();
-    if (!startFortnite(*build, login, cfg.password, pid, err)) {
+    if (!startFortnite(*build, email, password, pid, err)) {
         std::wcout << err << L"\n";
         wait(2);
-        return;
+        return false;
     }
 
     std::wcout << L"Injecting redirect DLL...\n";
@@ -290,14 +322,14 @@ void doLaunch(Config& cfg) {
     if (!injectDll(pid, dll, err)) {
         std::wcout << err << L"\n";
         wait(2);
-        return;
+        return false;
     }
 
-    if (!cfg.gameServerDll.empty()) {
+    if (firstClient && !cfg.gameServerDll.empty()) {
         if (!exists(cfg.gameServerDll)) {
             std::wcout << L"Game server DLL not found.\n";
             wait(2);
-            return;
+            return false;
         }
 
         std::wcout << L"Injecting game server DLL...\n";
@@ -305,7 +337,7 @@ void doLaunch(Config& cfg) {
         if (!injectDll(pid, cfg.gameServerDll, err)) {
             std::wcout << err << L"\n";
             wait(2);
-            return;
+            return false;
         }
     }
 
@@ -315,12 +347,34 @@ void doLaunch(Config& cfg) {
         if (!injectDll(pid, cfg.consoleDll, err)) {
             std::wcout << err << L"\n";
             wait(2);
-            return;
+            return false;
         }
     }
 
     std::wcout << L"Launch complete.\n";
     wait(2);
+    return true;
+}
+
+void doLaunch(Config& cfg) {
+    clearScreen();
+    printHeader();
+    launchClient(
+        cfg,
+        effectiveEmail(cfg.email),
+        effectivePassword(cfg.password),
+        L"Starting Fortnite...");
+}
+
+void doLaunchAnotherClient(Config& cfg) {
+    clearScreen();
+    printHeader();
+
+    launchClient(
+        cfg,
+        effectiveClientEmail(cfg.clientEmail),
+        effectiveClientPassword(cfg.clientPassword),
+        L"Starting another client...");
 }
 
 void doClose() {
@@ -348,7 +402,7 @@ void run(Config& cfg) {
         printStatus(cfg, backendOnline());
         printMenu();
 
-        int pick = readChoice(0, 8);
+        int pick = readChoice(0, 10);
         if (pick == 0) {
             break;
         }
@@ -361,7 +415,9 @@ void run(Config& cfg) {
         case 5: setPort(cfg); break;
         case 6: setLogin(cfg); break;
         case 7: doLaunch(cfg); break;
-        case 8: doClose(); break;
+        case 8: setClientLogin(cfg); break;
+        case 9: doLaunchAnotherClient(cfg); break;
+        case 10: doClose(); break;
         }
 
         std::wstring err;

@@ -2,7 +2,7 @@
 
 FNLauncher made by helix.67 on discord (which is me lol)
 
-A simple Windows console launcher for OGFN. It handles importing builds, connecting to a backend, launching Fortnite with the right auth args, and injecting the DLLs you choose.
+A simple OGFN Launcher made in C++ (I'll provide updates on whenever I feel like or when someone suggest on what to add to this launcher)
 
 ## What it brings (these options should be self explanatory)
 
@@ -15,9 +15,19 @@ A simple Windows console launcher for OGFN. It handles importing builds, connect
 | 5 | Backend port |
 | 6 | Email and Password |
 | 7 | Launch |
-| 8 | Close Fortnite |
+| 8 | Client Email and Password |
+| 9 | Launch Another Client |
+| 10 | Close Fortnite |
 | 0 | Exit |
+
+## GUI
+
+![GUI](https://github.com/Helix-Dev-Q/random-stuff-for-my-repos/edit/main/Screenshot%202026-07-13%20021200.png)
 
 ## Requirements
 
 - Windows 10 or newer
+
+## Issues
+
+- Make an issue if your having problems with the launcher or bugs about the launcher.

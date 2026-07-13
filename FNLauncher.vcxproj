@@ -96,7 +96,7 @@
 
     <ResourceCompile>
 
-      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header Files;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 
     </ResourceCompile>
 
@@ -195,7 +195,7 @@ exit /b 0</Command>
 
     <ClInclude Include="Header Files\Server.h" />
 
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="Header Files\resource.h" />
 
   </ItemGroup>
 

@@ -52,6 +52,38 @@ std::wstring valueOf(const std::wstring& line) {
 
 namespace FNLauncher {
 
+std::wstring effectiveEmail(const std::wstring& email) {
+    return email.empty() ? defaultEmail() : email;
+}
+
+std::wstring effectivePassword(const std::wstring& password) {
+    return password.empty() ? defaultPassword() : password;
+}
+
+std::wstring effectiveClientEmail(const std::wstring& email) {
+    return email.empty() ? defaultClientEmail() : email;
+}
+
+std::wstring effectiveClientPassword(const std::wstring& password) {
+    return password.empty() ? defaultClientPassword() : password;
+}
+
+bool usingDefaultEmail(const std::wstring& email) {
+    return email.empty();
+}
+
+bool usingDefaultPassword(const std::wstring& password) {
+    return password.empty();
+}
+
+bool usingDefaultClientEmail(const std::wstring& email) {
+    return email.empty();
+}
+
+bool usingDefaultClientPassword(const std::wstring& password) {
+    return password.empty();
+}
+
 bool loadConfig(Config& cfg, std::wstring&) {
     std::wstring file = configFile();
     std::wstring from = file;
@@ -74,7 +106,11 @@ bool loadConfig(Config& cfg, std::wstring&) {
             continue;
         }
 
-        if (line.rfind(L"email=", 0) == 0) {
+        if (line.rfind(L"clientemail=", 0) == 0) {
+            cfg.clientEmail = valueOf(line);
+        } else if (line.rfind(L"clientpassword=", 0) == 0) {
+            cfg.clientPassword = valueOf(line);
+        } else if (line.rfind(L"email=", 0) == 0) {
             cfg.email = valueOf(line);
         } else if (line.rfind(L"password=", 0) == 0) {
             cfg.password = valueOf(line);
@@ -160,6 +196,8 @@ bool saveConfig(const Config& cfg, std::wstring& err) {
 
     out << L"email=" << escape(cfg.email) << L"\n";
     out << L"password=" << escape(cfg.password) << L"\n";
+    out << L"clientemail=" << escape(cfg.clientEmail) << L"\n";
+    out << L"clientpassword=" << escape(cfg.clientPassword) << L"\n";
     out << L"console=" << escape(cfg.consoleDll) << L"\n";
     out << L"gameserverdll=" << escape(cfg.gameServerDll) << L"\n";
     out << L"port=" << cfg.port << L"\n";

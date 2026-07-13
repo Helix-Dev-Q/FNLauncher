@@ -63,9 +63,7 @@ bool startFortnite(
 
     std::wstring exe = norm(build.exe);
     std::wstring folder = fs::path(exe).parent_path().wstring();
-    std::wstring login = email;
-    std::wstring pass = password.empty() ? L"Rebooted" : password;
-    std::wstring args = makeArgs(exe, login, pass);
+    std::wstring args = makeArgs(exe, email, password);
 
     STARTUPINFOW start = {};
     start.cb = sizeof(start);

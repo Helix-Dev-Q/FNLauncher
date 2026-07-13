@@ -19,13 +19,6 @@ std::wstring trimLine(const std::wstring& text) {
     return text.substr(start, end - start + 1);
 }
 
-std::wstring maskPassword(const std::wstring& pass) {
-    if (pass.empty()) {
-        return L"none";
-    }
-    return std::wstring(pass.size(), L'*');
-}
-
 }
 
 namespace FNLauncher {
@@ -47,8 +40,30 @@ void printHeader() {
 }
 
 void printStatus(const Config& cfg, bool backendUp) {
-    std::wcout << L"Email:    " << (cfg.email.empty() ? L"none" : cfg.email) << L"\n";
-    std::wcout << L"Password: " << maskPassword(cfg.password) << L"\n";
+    std::wcout << L"Email:    " << effectiveEmail(cfg.email);
+    if (usingDefaultEmail(cfg.email)) {
+        std::wcout << L" (default)";
+    }
+    std::wcout << L"\n";
+
+    std::wcout << L"Password: " << effectivePassword(cfg.password);
+    if (usingDefaultPassword(cfg.password)) {
+        std::wcout << L" (default)";
+    }
+    std::wcout << L"\n";
+
+    std::wcout << L"Client Email: " << effectiveClientEmail(cfg.clientEmail);
+    if (usingDefaultClientEmail(cfg.clientEmail)) {
+        std::wcout << L" (default)";
+    }
+    std::wcout << L"\n";
+
+    std::wcout << L"Client Password: " << effectiveClientPassword(cfg.clientPassword);
+    if (usingDefaultClientPassword(cfg.clientPassword)) {
+        std::wcout << L" (default)";
+    }
+    std::wcout << L"\n";
+
     std::wcout << L"Port:     " << cfg.port << L"\n";
     std::wcout << L"Backend:  " << (backendUp ? L"online" : L"offline") << L"\n";
 
@@ -87,7 +102,9 @@ void printMenu() {
     std::wcout << L"5. Backend port\n";
     std::wcout << L"6. Email and Password\n";
     std::wcout << L"7. Launch\n";
-    std::wcout << L"8. Close Fortnite\n";
+    std::wcout << L"8. Client Email and Password\n";
+    std::wcout << L"9. Launch Another Client\n";
+    std::wcout << L"10. Close Fortnite\n";
     std::wcout << L"0. Exit\n\n";
     std::wcout << L"Choice: ";
 }
