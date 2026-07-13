@@ -66,6 +66,8 @@
 
     <TargetName>FNLauncher</TargetName>
 
+    <ApplicationIcon>public\FNLauncherL.ico</ApplicationIcon>
+
   </PropertyGroup>
 
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -91,6 +93,12 @@
       <ProgramDataBaseFile>$(IntDir)$(ProjectName).compile.pdb</ProgramDataBaseFile>
 
     </ClCompile>
+
+    <ResourceCompile>
+
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+
+    </ResourceCompile>
 
     <Link>
 
@@ -155,6 +163,18 @@ exit /b 0</Command>
 
   <ItemGroup>
 
+    <Image Include="public\FNLauncherL.ico" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+
+    <ResourceCompile Include="FNLauncher.rc" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+
     <ClInclude Include="Header Files\App.h" />
 
     <ClInclude Include="Header Files\Backend.h" />
@@ -174,6 +194,8 @@ exit /b 0</Command>
     <ClInclude Include="Header Files\Process.h" />
 
     <ClInclude Include="Header Files\Server.h" />
+
+    <ClInclude Include="resource.h" />
 
   </ItemGroup>
 

@@ -7,6 +7,9 @@
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Files\Main.cpp">
@@ -42,6 +45,9 @@
     <ClCompile Include="Source Files\Console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ResourceCompile Include="FNLauncher.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header Files\App.h">
@@ -73,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="Header Files\Console.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
