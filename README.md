@@ -22,7 +22,7 @@ A simple OGFN Launcher made in C++ (I'll provide updates on whenever I feel like
 
 ## GUI
 
-![GUI](https://github.com/Helix-Dev-Q/random-stuff-for-my-repos/edit/main/Screenshot%202026-07-13%20021200.png)
+![GUI](https://raw.githubusercontent.com/Helix-Dev-Q/random-stuff-for-my-repos/main/Screenshot%202026-07-13%20021200.png)
 
 ## Requirements
 
